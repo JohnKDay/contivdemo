@@ -28,41 +28,22 @@ ConfirmPrompt
 
 # -------------------  Specify the correct vlan range here...
 
-netctl global set --fwd-mode bridge --fabric-mode default  --vlan-range "2990-2999"
-
 netctl global info
 
 ConfirmPrompt
 
-# ------------------- Create a tenant
-
-netctl tenant create trains
-
-netctl tenant ls
-
-ConfirmPrompt
-
-# ------------------- Choose the subnet you like...
-
-netctl net create -t trains -e vlan -s 29.91.0.100-29.91.0.200/24 -g 29.91.0.1 steam
-
-netctl net ls -t trains
-
-ConfirmPrompt
-
-
 # ------------------- Creating two EPGs : app and db
 # ------------------- with Deny All policy
 
-netctl policy create -t trains app2db
+netctl policy create app2db
 
-netctl group create -t trains steam app
+netctl group create steam app
 
-netctl group create -t trains -p app2db steam db
+netctl group create -p app2db steam db
 
-netctl policy rule-add -t trains -d in --protocol tcp --action deny app2db 1
-netctl policy rule-add -t trains -d in --protocol udp --action deny app2db 2
-netctl policy rule-add -t trains -d in --protocol icmp --action deny app2db 3
+netctl policy rule-add -d in --protocol tcp --action deny app2db 1
+netctl policy rule-add -d in --protocol udp --action deny app2db 2
+netctl policy rule-add -d in --protocol icmp --action deny app2db 3
 
 ConfirmPrompt
 
@@ -105,7 +86,7 @@ ConfirmPrompt
 # ------------------- Create ICMP allow policy so that these container can ping each other.
 
 
-netctl policy rule-add -t trains -p 10 -d in --protocol icmp  --from-group app  --action allow app2db 10
+netctl policy rule-add -p 10 -d in --protocol icmp  --from-group app  --action allow app2db 10
 
 # ------------------- Confirm that app1 container CAN ping db1 container
 
@@ -122,7 +103,7 @@ ConfirmPrompt
 # ------------------- Now allow TCP port 6666 between these containers
 
 
-netctl policy rule-add -t trains -p 10 -d in --protocol tcp --port 6666 --from-group app  --action allow app2db 11
+netctl policy rule-add -p 10 -d in --protocol tcp --port 6666 --from-group app  --action allow app2db 11
 
 # ------------------- Confirm that port 6666 is allowed between these Containers
 
@@ -145,8 +126,8 @@ kubectl get pods
 ConfirmPrompt
 
 
-netctl group rm -t trains app
-netctl group rm -t trains db
-netctl policy rm -t trains app2db
-netctl network rm -t trains steam
+netctl group rm app
+netctl group rm db
+netctl policy rm app2db
+netctl network rm steam
 netctl tenant rm trains

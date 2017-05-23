@@ -5,7 +5,7 @@ metadata:
   labels:
     app: app-epg
     io.contiv.tenant: default
-    io.contiv.network: default-net
+    io.contiv.network: newnet
     io.contiv.net-group: app
 spec:
   containers:

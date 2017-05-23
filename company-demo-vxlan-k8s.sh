@@ -26,24 +26,35 @@ kubectl get nodes
 
 ConfirmPrompt
 
-# -------------------  Specify the correct vlan range here...
+# ------------------- Get global info
 
 netctl global info
 
 ConfirmPrompt
 
+ConfirmPrompt
+
+# ------------------- Choose the subnet you like...
+
+netctl net create -t default -e vxlan -s 29.91.0.100-29.91.0.200/24 -g 29.91.0.1 newnet
+
+netctl net ls -t default
+
+ConfirmPrompt
+
+
 # ------------------- Creating two EPGs : app and db
 # ------------------- with Deny All policy
 
-netctl policy create app2db
+netctl policy create -t default app2db
 
-netctl group create default-net app
+netctl group create -t default newnet app
 
-netctl group create -p app2db default-net db
+netctl group create -t default -p app2db newnet db
 
-netctl policy rule-add -d in --protocol tcp --action deny app2db 1
-netctl policy rule-add -d in --protocol udp --action deny app2db 2
-netctl policy rule-add -d in --protocol icmp --action deny app2db 3
+netctl policy rule-add -t default -d in --protocol tcp --action deny app2db 1
+netctl policy rule-add -t default -d in --protocol udp --action deny app2db 2
+netctl policy rule-add -t default -d in --protocol icmp --action deny app2db 3
 
 ConfirmPrompt
 
@@ -86,7 +97,7 @@ ConfirmPrompt
 # ------------------- Create ICMP allow policy so that these container can ping each other.
 
 
-netctl policy rule-add -p 10 -d in --protocol icmp  --from-group app  --action allow app2db 10
+netctl policy rule-add -t default -p 10 -d in --protocol icmp  --from-group app  --action allow app2db 10
 
 # ------------------- Confirm that app1 container CAN ping db1 container
 
@@ -103,7 +114,7 @@ ConfirmPrompt
 # ------------------- Now allow TCP port 6666 between these containers
 
 
-netctl policy rule-add -p 10 -d in --protocol tcp --port 6666 --from-group app  --action allow app2db 11
+netctl policy rule-add -t default -p 10 -d in --protocol tcp --port 6666 --from-group app  --action allow app2db 11
 
 # ------------------- Confirm that port 6666 is allowed between these Containers
 
@@ -126,6 +137,7 @@ kubectl get pods
 ConfirmPrompt
 
 
-netctl group rm app
-netctl group rm db
-netctl policy rm app2db
+netctl group rm -t default app
+netctl group rm -t default db
+netctl policy rm -t default app2db
+netctl network rm -t default newnet

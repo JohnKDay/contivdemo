@@ -1,0 +1,11 @@
+#
+# Set the IPs of all the nodes in the Contiv setup
+# and allows for netctl communications
+#
+# This is a custom section for each test instance
+# Modification of CLUSTER_NODE_IPS required
+
+CLUSTER_NODE_IPS=15.29.33.147,15.29.33.148,15.29.33.149
+no_proxy=15.29.33.147,15.29.33.148,15.29.33.149,localhost,netmaster
+
+NETMASTER="http://15.29.33.147:9999"

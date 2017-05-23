@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app1
+  labels:
+    app: app-epg
+    io.contiv.tenant: trains
+    io.contiv.network: steam
+    io.contiv.net-group: app
+spec:
+  containers:
+  - name: iperf-alpine
+    image: johnkday/contiv-test-container

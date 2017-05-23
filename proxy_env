@@ -1,0 +1,17 @@
+
+# Settings to allow use of proxy server to speed download and avoid 
+# routing issues sought from internal docker (172.18.0.0/16) and 
+# Contiv (172.20.0.0/16) networks
+
+http_proxy=http://15.29.39.254:3128
+https_proxy=http://15.29.39.254:3128
+HTTP_PROXY=http://15.29.39.254:3128
+HTTPS_PROXY=http://15.29.39.254:3128
+
+# Also preset to allow for govc commands from VMs (gov binary already in image)
+
+GOVC_URL="https://vmdev1:contiv123@contiv245.cisco.com"
+GOVC_INSECURE=true
+
+# Keep one from inadvetant <ctrl>+d logoff
+IGNOREEOF=5

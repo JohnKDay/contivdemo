@@ -1,0 +1,53 @@
+## Config file for deploying Contiv using test cluster vm
+## Don't forget to enable the net device for what you need!
+## The ethX devices have been remapped & renamed to line up
+## with vmware network interface assignments
+#
+## Devices:
+#     net1: Lab network - use for control plane
+#     net2: l2 - vlan network data plane
+#     net3: l3 - bgp network data plane
+#     net4: ACI - aci network
+#
+## Devices can be enabled using the following command and will
+#  re-connect on reboot:
+#      nmcli con mod <interface> connection.autoconnect yes
+#
+## Devices can also be disabled and removed from autorestart:
+#      nmcli dev dis <interface>
+#      nmcli con mod <interface> connection.autoconnect no
+#
+CONNECTION_INFO:
+    15.29.33.127:
+      role: master
+      control: net1
+      data: net2
+    15.29.33.128:
+      control: net1
+      data: net2
+    15.29.33.129:
+      control: net1
+      data: net2
+
+#  APIC Access Info
+#  IF ACI_MODE is ON
+### Fill in the info and uncomment (quotes are needed)
+#APIC_URL: "https://10.193.xx.yy:443"
+#APIC_USERNAME: "admin"
+#APIC_PASSWORD: "admin"
+#APIC_PHYS_DOMAIN: "TEST-Phys-Dom"
+#APIC_EPG_BRIDGE_DOMAIN: "not_specified"
+#APIC_CONTRACTS_UNRESTRICTED_MODE: "no"
+#
+## The following two settings are for cases where BD has to be pre-defined.
+## If you don't know what this means, then you probably need to leave it
+## with the default values given below.
+##APIC_EPG_BRIDGE_DOMAIN: "not_specified"
+##APIC_CONTRACTS_UNRESTRICTED_MODE: "no"
+#
+### Full path of the leaf nodes connected to your servers.
+### List each node on a new line as shown commented
+#APIC_LEAF_NODES:
+#    - topology/pod-1/node-101
+#    - topology/pod-1/node-102
+###===============================================================

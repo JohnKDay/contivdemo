@@ -4,8 +4,8 @@ metadata:
   name: app2
   labels:
     app: app-epg
-    io.contiv.tenant: trains
-    io.contiv.network: steam
+    io.contiv.tenant: default
+    io.contiv.network: default-net
     io.contiv.net-group: app
 spec:
   containers:

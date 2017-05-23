@@ -4,8 +4,8 @@ metadata:
   name: db1
   labels:
     app: db-epg
-    io.contiv.tenant: trains
-    io.contiv.network: steam
+    io.contiv.tenant: default
+    io.contiv.network: default-net
     io.contiv.net-group: db
 spec:
   containers:

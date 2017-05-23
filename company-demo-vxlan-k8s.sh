@@ -37,9 +37,9 @@ ConfirmPrompt
 
 netctl policy create app2db
 
-netctl group create steam app
+netctl group create default-net app
 
-netctl group create -p app2db steam db
+netctl group create -p app2db default-net db
 
 netctl policy rule-add -d in --protocol tcp --action deny app2db 1
 netctl policy rule-add -d in --protocol udp --action deny app2db 2
@@ -129,5 +129,3 @@ ConfirmPrompt
 netctl group rm app
 netctl group rm db
 netctl policy rm app2db
-netctl network rm steam
-netctl tenant rm trains

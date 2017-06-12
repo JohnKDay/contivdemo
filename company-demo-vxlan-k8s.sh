@@ -52,9 +52,10 @@ netctl group create -t default newnet app
 
 netctl group create -t default -p app2db newnet db
 
-netctl policy rule-add -t default -d in --protocol tcp --action deny app2db 1
-netctl policy rule-add -t default -d in --protocol udp --action deny app2db 2
-netctl policy rule-add -t default -d in --protocol icmp --action deny app2db 3
+#netctl policy rule-add -t default -d in --protocol tcp --action deny app2db 1
+#netctl policy rule-add -t default -d in --protocol udp --action deny app2db 2
+#netctl policy rule-add -t default -d in --protocol icmp --action deny app2db 3
+netctl policy rule-add -t default --action deny app2db 1
 
 ConfirmPrompt
 

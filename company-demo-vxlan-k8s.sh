@@ -50,7 +50,7 @@ ConfirmPrompt
 # ------------------- Choose the subnet you like...
 
 netctl net create -t default -e vxlan -s 29.91.0.100-29.91.0.200/24 -g 29.91.0.1 newnet
-netctl net create -t default -e vxlan -s 200.200.200.100-200.200.200.200/24 -g 29.91.0.1 newnet
+netctl net create -t default -e vxlan -s 39.91.0.100-39.91.0.200/24 -g 39.91.0.1 newnet2
 
 netctl net ls -t default
 
@@ -65,6 +65,8 @@ netctl policy create -t default app2db
 netctl group create -t default newnet app
 
 netctl group create -t default -p app2db newnet db
+
+netctl group create -t default newnet2 db2
 
 netctl policy rule-add -t default --action deny app2db 1
 
@@ -87,6 +89,11 @@ cat db1.yaml
 printf "\n-----------------------\n"
 kubectl create -f db1.yaml
 
+echo "db2.yaml"
+cat db2.yaml
+printf "\n-----------------------\n"
+kubectl create -f db2.yaml
+
 
 # ------------------- Checking kubectl until pods are running 
 
@@ -98,13 +105,15 @@ done
 
 kubectl get pods -o wide
 
-app1IP=$(kubectl describe pod `app1` | grep IP | sed -E 's/IP:[[:space:]]+//')
-app2IP=$(kubectl describe pod `app2` | grep IP | sed -E 's/IP:[[:space:]]+//')
-db1IP=$(kubectl describe pod `db1` | grep IP | sed -E 's/IP:[[:space:]]+//')
+app1IP=$(kubectl describe pod app1 | grep IP | sed -E 's/IP:[[:space:]]+//')
+app2IP=$(kubectl describe pod app2 | grep IP | sed -E 's/IP:[[:space:]]+//')
+db1IP=$(kubectl describe pod db1 | grep IP | sed -E 's/IP:[[:space:]]+//')
+db2IP=$(kubectl describe pod db2 | grep IP | sed -E 's/IP:[[:space:]]+//')
 
 echo "app1 IP address: " $app1IP
 echo "app2 IP address: " $app2IP
 echo "db1 IP address: " $db1IP
+echo "db2 IP address: " $db2IP
 
 
 ConfirmPrompt
@@ -112,6 +121,10 @@ ConfirmPrompt
 # ------------------- Confirm that app1 container CAN ping app2 container
 
 kubectl exec -ti app1 -- ping -w 3 ${app2IP}
+
+# ------------------- Confirm that app1 container CAN ping db2 container
+
+kubectl exec -ti app1 -- ping -w 3 ${db2IP}
 
 # ------------------- Confirm that app1 container CAN NOT ping db1 container
 
@@ -167,11 +180,12 @@ do
 done
 kubectl get pods 
 
-
-ConfirmPrompt
+echo -- remove the created network
 
 
 netctl group rm -t default app
 netctl group rm -t default db
+netctl group rm -t default db2
 netctl policy rm -t default app2db
 netctl network rm -t default newnet
+netctl network rm -t default newnet2

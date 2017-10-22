@@ -145,23 +145,27 @@ kubectl exec -ti app1 -- ping -w 3 ${db1IP}
 
 ConfirmPrompt
 
-# ------------------- Confirm that port range 6666-6669 is open app1->app2
+# ------------------- Confirm that port 6666 is open app1->app2
 
 kubectl exec -ti app1 -- nc -zvnw 3 ${app2IP} 6666-6669
 
-# ------------------- Confirm that port range 6666-6669 is open app1->app2
+# ------------------- Confirm that port 6666 is open app1->db2
+
+kubectl exec -ti app1 -- nc -zvnw 3 ${db2IP} 6666-6669
+
+# ------------------- Confirm that port 6666 is NOT open app1->db1
 
 kubectl exec -ti app1 -- nc -zvnw 3 ${db1IP} 6666-6669
 
 
 ConfirmPrompt
 
-# ------------------- Now allow TCP port 6666 between these containers
+# ------------------- Now allow TCP port 6666 from APP group to DB gorup
 
 
 netctl policy rule-add -t default -p 10 -d in --protocol tcp --port 6666 --from-group app  --action allow app2db 11
 
-# ------------------- Confirm that port 6666 is allowed between these Containers
+# ------------------- Confirm that port 6666 is open app1->db1
 
 kubectl exec -ti app1 -- nc -zvnw 3 ${db1IP} 6666-6669
 

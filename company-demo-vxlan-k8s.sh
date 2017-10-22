@@ -35,6 +35,8 @@ function ConfirmPrompt {
 }
 # ------------------ Show container environment
 
+source kubectl.src
+
 kubectl get nodes
 
 ConfirmPrompt
@@ -42,8 +44,6 @@ ConfirmPrompt
 # ------------------- Get global info
 
 netctl global info
-
-ConfirmPrompt
 
 ConfirmPrompt
 

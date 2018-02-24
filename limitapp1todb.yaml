@@ -1,0 +1,13 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: db-allow-app1-traffic
+spec:
+  podSelector:
+    matchLabels:
+      app: db
+  ingress:
+  - from:
+      - podSelector:
+          matchLabels:
+            app: app1

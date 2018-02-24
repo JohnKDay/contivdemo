@@ -3,10 +3,8 @@ kind: Pod
 metadata:
   name: app1
   labels:
-    app: app-epg
-    io.contiv.tenant: default
-    io.contiv.network: newnet
-    io.contiv.net-group: app
+    app: app1
+
 spec:
   containers:
   - name: iperf-alpine

@@ -37,15 +37,22 @@ function ConfirmPrompt {
 
 source kubectl.src
 
-kubectl get nodes
+#------------ Untaint master + global info
+#kubectl taint nodes --all node-role.kubernetes.io/master-    ---- Already untainted in vagrant
+
+echo "show int" | sudo nc -U /run/vpp/cli.sock | strings 
+
+echo "show hardware" | sudo nc -U /run/vpp/cli.sock  | strings
 
 ConfirmPrompt
 
 # ------------------- Get global info
 
-netctl global info
 
-ConfirmPrompt
+
+#quit
+
+#ConfirmPrompt
 
 # ------------------- Choose the subnet you like...
 

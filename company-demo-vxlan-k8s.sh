@@ -46,38 +46,7 @@ echo "show hardware" | sudo nc -U /run/vpp/cli.sock  | strings
 
 ConfirmPrompt
 
-# ------------------- Get global info
-
-
-
-#quit
-
-#ConfirmPrompt
-
-# ------------------- Choose the subnet you like...
-
-netctl net create -t default -e vxlan -s 29.91.0.100-29.91.0.200/24 -g 29.91.0.1 newnet
-netctl net create -t default -e vxlan -s 39.91.0.100-39.91.0.200/24 -g 39.91.0.1 newnet2
-
-netctl net ls -t default
-
-ConfirmPrompt
-
-
-# ------------------- Creating two EPGs : app and db
-# ------------------- with Deny All policy
-
-netctl policy create -t default app2db
-
-netctl group create -t default newnet app
-
-netctl group create -t default -p app2db newnet db
-
-netctl group create -t default newnet2 db2
-
-netctl policy rule-add -t default --action deny app2db 1
-
-ConfirmPrompt
+# ------------------- Get global info#ConfirmPrompt
 
 # ------------------- Creating containers with app/trains and db/trains in a network
 
@@ -133,9 +102,9 @@ kubectl exec -ti app1 -- ping -w 3 ${app2IP}
 
 kubectl exec -ti app1 -- ping -w 3 ${db2IP}
 
-# ------------------- Confirm that app1 container CAN NOT ping db1 container
+# ------------------- Confirm that appr2 container CAN  ping db1 container
 
-kubectl exec -ti app1 -- ping -w 3 ${db1IP}
+kubectl exec -ti app2 -- ping -w 3 ${db1IP}
 
 ConfirmPrompt
 
